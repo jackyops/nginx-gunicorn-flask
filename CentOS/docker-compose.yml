@@ -1,0 +1,17 @@
+version: "2"
+services:
+  flasktest:
+    #restart: always
+    stdin_open: true
+    tty: true
+    build: ./Dockerfile
+    image: jackyops/nginx-gunicorn-flask:latest
+    volumes:
+      - ./app:/deploy/app
+      - ./nginx_flask.conf:/etc/nginx/conf.d/default.conf
+      - ./supervisord.ini:/etc/supervisord.d/supervisord.ini
+      - ./gunicorn.ini:/etc/supervisord.d/gunicorn.ini
+    ports:
+      - "8082:80"
+    #command: '/bin/bash' 
+    command: '/usr/bin/supervisord -c /etc/supervisord.conf'
